@@ -30,7 +30,7 @@
 	};
 
 	if ($) { // Global jQuery
-		plugin.fn = (plugin.isStatic ? $.fn : $)[plugin.name] = plugin.factory($);
+		plugin.fn = (plugin.isStatic ? $ : $.fn)[plugin.name] = plugin.factory($);
 	}
 
 	if (typeof exports !== 'undefined' && plugin.fn) { // CommonJS
@@ -41,7 +41,7 @@
 		exports[plugin.name] = plugin.fn;
 	} else if (typeof define === 'function' && define.amd) { // AMD
 		define(['jquery'], function ($) {
-			var fn = (plugin.isStatic ? $.fn : $)[plugin.name] = plugin.factory($);
+			var fn = (plugin.isStatic ? $ : $.fn)[plugin.name] = plugin.factory($);
 			return fn;
 		});
 	} else if (!$) {
