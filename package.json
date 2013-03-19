@@ -1,7 +1,7 @@
 {
 	"name": "jquery.imageFallback",
 	"version": "1.0.0",
-	"description": "Fallback image replacer plugin for jQuery..",
+	"description": "Fallback image replacer plugin for jQuery.",
 	"homepage": "https://github.com/michael-lawrence/jquery.imageFallback",
 	"contributors": [
 		"Michael Lawrence <mike@pandemicode.com> (http://pandemicode.com/)"
