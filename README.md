@@ -1,6 +1,6 @@
 #jquery.imageFallback
 
-Fallback image replacer plugin for jQuery.
+Fallback image replacement plugin for jQuery.
 
 * * *
 
