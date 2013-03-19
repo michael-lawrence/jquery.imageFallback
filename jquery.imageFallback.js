@@ -24,20 +24,24 @@
 			};
 		};
 
-	if (typeof exports !== 'undefined' && $) { // CommonJS
+	if (typeof exports !== 'undefined' && window.$) { // CommonJS
+		var imageFallback = fn($);
+
 		if (typeof module !== 'undefined' && module.exports) {
-			module.exports = fn($);
+			module.exports = imageFallback;
 		}
 
-		exports.imageFallback = fn($);
+		exports.imageFallback = imageFallback;
+
+		$.fn.imageFallback = imageFallback;
 	} else if (typeof define === 'function' && define.amd) { // AMD
 		define(['jquery'], function ($) {
 			$.fn.imageFallback = fn($);
 			return fn;
 		});
-	}
-
-	if ($) { // Global jQuery
+	} else if (window.$) { // Global jQuery
 		$.fn.imageFallback = fn($);
+	} else {
+		throw "jQuery not defined."
 	}
 })();
