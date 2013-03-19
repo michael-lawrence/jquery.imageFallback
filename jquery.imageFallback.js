@@ -1,12 +1,16 @@
 'use strict';
 
-(function () {
-	// Constants
-	var ERROR = 'error',
-		SRC = 'src',
-		FALLBACK = 'fallback',
-		fn = function ($) {
+(function ($) {
+	var plugin = {
+		'name' : 'imageFallback',
+		'isStatic' : false,
+		'factory' : function ($) {
 			return function () {
+				// Constants
+				var ERROR = 'error',
+					SRC = 'src',
+					FALLBACK = 'fallback';
+
 				this.each(function () {
 					var $el = $(this),
 						dataFallback = $el.data(FALLBACK),
@@ -22,26 +26,30 @@
 
 				return this;
 			};
-		};
+		}
+	};
 
-	if (typeof exports !== 'undefined' && window.$) { // CommonJS
-		var imageFallback = fn($);
+	if ($) { // Global jQuery
+		plugin.fn = (plugin.isStatic ? $.fn : $)[plugin.name] = plugin.factory($);
+	}
 
+	if (typeof exports !== 'undefined' && plugin.fn) { // CommonJS
 		if (typeof module !== 'undefined' && module.exports) {
-			module.exports = imageFallback;
+			module.exports = plugin.fn;
 		}
 
-		exports.imageFallback = imageFallback;
-
-		$.fn.imageFallback = imageFallback;
+		exports[plugin.name] = plugin.fn;
 	} else if (typeof define === 'function' && define.amd) { // AMD
 		define(['jquery'], function ($) {
-			$.fn.imageFallback = fn($);
+			var fn = (plugin.isStatic ? $.fn : $)[plugin.name] = plugin.factory($);
 			return fn;
 		});
-	} else if (window.$) { // Global jQuery
-		$.fn.imageFallback = fn($);
-	} else {
-		throw "jQuery not defined."
+	} else if (!$) {
+		/*
+			jQuery isn't defined and user is
+			trying to use plugin directly without
+			CommonJS or AMD support
+		*/
+		throw 'jQuery not defined.';
 	}
-})();
+})(window.$);
