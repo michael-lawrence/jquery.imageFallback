@@ -1,34 +1,6 @@
 'use strict';
 
-(function ($) {
-	var plugin = {
-		'name' : 'imageFallback',
-		'isStatic' : false,
-		'factory' : function ($) {
-			return function () {
-				// Constants
-				var ERROR = 'error',
-					SRC = 'src',
-					FALLBACK = 'fallback';
-
-				this.each(function () {
-					var $el = $(this),
-						dataFallback = $el.data(FALLBACK),
-						dataSrc = $el.attr(SRC),
-						onError = function () {
-							$el.off(ERROR, onError).attr('src', dataFallback);
-						};
-
-					if (dataFallback) {
-						$el.on(ERROR, onError).attr(SRC, dataSrc);
-					}
-				});
-
-				return this;
-			};
-		}
-	};
-
+(function ($, plugin) {
 	if ($) { // Global jQuery
 		plugin.fn = (plugin.isStatic ? $ : $.fn)[plugin.name] = plugin.factory($);
 	}
@@ -52,4 +24,30 @@
 		*/
 		throw 'jQuery not defined.';
 	}
-})(window.$);
+})(window.$, {
+	'name' : 'imageFallback',
+	'isStatic' : false,
+	'factory' : function ($) {
+		return function () {
+			// Constants
+			var ERROR = 'error',
+				SRC = 'src',
+				FALLBACK = 'fallback';
+
+			this.each(function () {
+				var $el = $(this),
+					dataFallback = $el.data(FALLBACK),
+					dataSrc = $el.attr(SRC),
+					onError = function () {
+						$el.off(ERROR, onError).attr('src', dataFallback);
+					};
+
+				if (dataFallback) {
+					$el.on(ERROR, onError).attr(SRC, dataSrc);
+				}
+			});
+
+			return this;
+		};
+	}
+});
